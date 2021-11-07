@@ -28,9 +28,15 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.document, "Other", false));
 
     // Handle "checkbox" button clicks
-    html.find(`.tab.details button.checkbox:not(.three-way)`).click((event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.document));
-    html.find(`.tab.details button.checkbox.three-way`).click((event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.document));
+    html.on('click', `.tab.details button.checkbox:not(.three-way)`, (event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.document));
+    html.on('click', `.tab.details button.checkbox.three-way`, (event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.document));
 });
+
+// only present if the Items With Rollable Tables module is present
+Hooks.on('items-with-rolltables-5e.sheetMutated', (itemSheet, html) => {
+    const rollableTable = html.find(`.tab.details`).find('.rollable-table-drop-target');
+    rollableTable.append(_makeAutoRollCheckboxElement(itemSheet.document, "Rolltable", true));
+})
 
 function _makeAutoRollCheckboxElement(item, target, threeWay) {
     const text = game.i18n.localize(`${MODULE_NAME}.AUTO-ROLL.AutoRoll`);

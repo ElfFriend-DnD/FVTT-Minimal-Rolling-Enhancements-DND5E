@@ -13,9 +13,11 @@ export function patchItemBaseRoll() {
 
         const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
         const autoRollDamageSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_DMG);
+        const autoRollRolltableSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_ROLLTABLE);
         const autoRollCheckWithOverride = this.getFlag(MODULE_NAME, "autoRollAttack") ?? autoRollCheckSetting;
         const autoRollDamageWithOverride = this.getFlag(MODULE_NAME, "autoRollDamage") ?? autoRollDamageSetting;
         const autoRollOther = this.getFlag(MODULE_NAME, "autoRollOther");
+        const autoRollRolltableWithOverride = this.getFlag(MODULE_NAME, "autoRollRolltable") ?? autoRollRolltableSetting;
 
         // some rolls only create their chat card after other dialogs have been interacted with
         // we need to capture the active keyboard modifiers on intial use to pass in to later rolls.
@@ -26,7 +28,7 @@ export function patchItemBaseRoll() {
 
         // Short circuit if auto roll is off for this user/item
         // OR if User quit out of the dialog workflow early (or some other failure)
-        if ((!autoRollCheckWithOverride && !autoRollDamageWithOverride && !autoRollOther) || !chatMessage) {
+        if ((!autoRollCheckWithOverride && !autoRollDamageWithOverride && !autoRollOther && !autoRollRolltableWithOverride) || !chatMessage) {
             return chatMessage;
         }
 
@@ -54,6 +56,13 @@ export function patchItemBaseRoll() {
 
         if (this.data.data.formula?.length && autoRollOther) {
             await this.rollFormula();
+        }
+
+        const tableUuid = this.data.flags?.['items-with-rolltables-5e']?.['rollable-table-uuid'];
+
+        if (game.modules.get('items-with-rolltables-5e')?.active && !!tableUuid && autoRollRolltableWithOverride) {
+            const document = await fromUuid(tableUuid);
+            if (!!document) document.draw();
         }
 
         return chatMessage;

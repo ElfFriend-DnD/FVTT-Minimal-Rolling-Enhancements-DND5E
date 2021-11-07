@@ -3,6 +3,7 @@ import { MODULE_NAME } from "./const.mjs";
 export const SETTING_NAMES = {
     AUTO_CHECK: "autoCheck",
     AUTO_DMG: "autoDamage",
+    AUTO_ROLLTABLE: "autoRolltable",
     SHOW_TOTAL_DMG: "showTotalDamage",
     ROLL_DLG_BHVR: "rollDialogBehavior",
     SHOW_ROLL_DLG_MOD: "showRollDialogModifier",
@@ -39,6 +40,16 @@ function _registerAutoRollsSettings() {
         hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollDamageHint`),
         scope: "world",
         config: true,
+        type: Boolean,
+        default: false,
+    });
+
+    // This should only appear if the module is present (until this can be added to the system)
+    game.settings.register(MODULE_NAME, SETTING_NAMES.AUTO_ROLLTABLE, {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollRolltableLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollRolltableHint`),
+        scope: "world",
+        config: game.modules.get('items-with-rolltables-5e')?.active,
         type: Boolean,
         default: false,
     });

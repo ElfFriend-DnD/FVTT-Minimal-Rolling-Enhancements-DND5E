@@ -5,6 +5,8 @@
       "AutoRollChecksHint": "Automatically roll the attack roll or tool check for the item if it exists.",
       "AutoRollDamageLabel": "Automatically Roll Item Damage",
       "AutoRollDamageHint": "Automatically roll the first formula group for the item if it exists.",
+      "AutoRollRolltableLabel": "Automatically Roll Item Rollable Table",
+      "AutoRollRolltableHint": "Automatically roll the Rollable Table for the item if it exists.",
       "ShowDamageTotalLabel": "Show Total Damage",
       "ShowDamageTotalHint": "Whether or not to show the total result of all individual rolls in a combined damage card.",
       "GlobalDefault": "World Default",

@@ -31,6 +31,10 @@ Minimal Rolling Enhancements is compatible with [libWrapper](https://foundryvtt.
 however installing the libWrapper module is *optional*.
 You are not required to install libWrapper for MRE to work correctly, however installing it may reduce conflicts with other modules.
 
+### [Items with Rollable Tables](https://github.com/ElfFriend-DnD/foundryvtt-items-with-rolltables-5e)
+
+Fully supported, including options to automatically roll the rollable table when the item is rolled.
+
 ### PopOut!
 
 Using Alt/Shift/Control modifier keys from popped out sheets to bypass item roll dialogs is not supported.
