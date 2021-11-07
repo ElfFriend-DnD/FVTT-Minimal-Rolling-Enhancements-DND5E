@@ -35,10 +35,6 @@ You are not required to install libWrapper for MRE to work correctly, however in
 
 Fully supported, including options to automatically roll the rollable table when the item is rolled.
 
-### PopOut!
-
-Using Alt/Shift/Control modifier keys from popped out sheets to bypass item roll dialogs is not supported.
-
 ## License
 
 Licensed under the GPLv3 License (see [LICENSE](LICENSE)).

@@ -1,7 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.mjs";
 import { SETTING_NAMES } from "../settings.mjs";
-import { modifiers } from "../modifiers.mjs";
 import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
 
 /**
@@ -9,6 +8,8 @@ import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
  */
 export function patchItemBaseRoll() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.roll", async function patchedRoll(wrapped, config, ...args) {
+        let currentGlobalEvent = event; // black magic global event the browser keeps track of
+
         await initializeFormulaGroups(this);
 
         const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
@@ -20,8 +21,8 @@ export function patchItemBaseRoll() {
         const autoRollRolltableWithOverride = this.getFlag(MODULE_NAME, "autoRollRolltable") ?? autoRollRolltableSetting;
 
         // some rolls only create their chat card after other dialogs have been interacted with
-        // we need to capture the active keyboard modifiers on intial use to pass in to later rolls.
-        const capturedModifiers = foundry.utils.deepClone(modifiers);
+        // we need to capture the current global event on intial use to pass in to later rolls.
+        const capturedGlobalEvent = foundry.utils.deepClone(currentGlobalEvent);
 
         // Call the original Item5e#roll and get the resulting message data
         const chatMessage = await wrapped(config, ...args);
@@ -36,9 +37,9 @@ export function patchItemBaseRoll() {
         let checkRoll;
         if (autoRollCheckWithOverride) {
             if (this.hasAttack) {
-                checkRoll = await this.rollAttack({ event: capturedModifiers });
+                checkRoll = await this.rollAttack({ event: capturedGlobalEvent });
             } else if (this.type === "tool") {
-                checkRoll = await this.rollToolCheck({ event: capturedModifiers });
+                checkRoll = await this.rollToolCheck({ event: capturedGlobalEvent });
             }
         }
 

@@ -1,7 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.mjs";
 import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.mjs";
-import { modifiers } from "../modifiers.mjs";
 
 const d20RollsToPatch = [
     { path: "CONFIG.Item.documentClass.prototype.rollAttack", optionsIndex: 0 },
@@ -21,6 +20,7 @@ export function patchAbilityChecks() {
 // Patches a d20 roll to use the modifier hotkeys set in the module settings
 function generateD20RollPatch(optionsIndex) {
     return function(wrapper, ...args) {
+        let currentGlobalEvent = event; // black magic global event the browser keeps track of
         let options = args[optionsIndex];
         if (!options) args[optionsIndex] = options = {};
 
@@ -29,7 +29,7 @@ function generateD20RollPatch(optionsIndex) {
         let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
         let disAdvModifier = getSettingLocalOrDefault(SETTING_NAMES.DISADV_MOD);
 
-        const evt = options.event ?? foundry.utils.deepClone(modifiers);
+        const evt = options.event ?? foundry.utils.deepClone(currentGlobalEvent);
         delete options.event;
 
         const optionsOverride = {
