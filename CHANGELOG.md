@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## Legacy Changelog
+Since taking over this project, I haven't been updating this changelog. Refer instead to the [releases page.](https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases)
+
 ## [3.0.0] 2021-10-16
 Big Refactor of the patches to reduce complexity. Behavior for users is largely unchanged with one exception:
 

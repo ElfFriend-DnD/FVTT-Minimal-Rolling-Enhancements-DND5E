@@ -4,7 +4,6 @@ import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.mjs";
 import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.mjs";
 import { patchItemPrepareData, patchItemSheetGetData } from "./scripts/patches/initialize-formula-groups.mjs";
 import { patchItemDisplayCard } from "./scripts/patches/item-display-card-patch.mjs";
-import { patchTokenFromActor } from "./scripts/patches/token-from-actor-patch.mjs";
 import { registerSettings } from "./scripts/settings.mjs";
 
 Hooks.on("setup", () => {
@@ -16,5 +15,4 @@ Hooks.on("setup", () => {
     patchItemRollDamage();
     patchItemPrepareData();
     patchItemSheetGetData();
-    patchTokenFromActor();
 });
