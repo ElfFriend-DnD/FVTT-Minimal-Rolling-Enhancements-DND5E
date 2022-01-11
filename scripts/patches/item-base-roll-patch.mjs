@@ -43,12 +43,17 @@ export function patchItemBaseRoll() {
             }
         }
 
+        let chatMessageData = chatMessage;
+        if (chatMessage instanceof ChatMessage) {
+            chatMessageData = chatMessage.data;
+        }
+
         if (this.hasDamage && autoRollDamageWithOverride) {
             // temporary until this can be added to core
-            const spellLevel = chatMessage.data.flags[MODULE_NAME]['spellLevel'];
+            const spellLevel = chatMessageData?.flags?.[MODULE_NAME]?.['spellLevel'] ?? this.data.data?.level;
 
             const options = { spellLevel };
-            if (args.length && Number.isNumeric(config.spellLevel)) options.spellLevel = config.spellLevel;
+            if (Number.isNumeric(config?.spellLevel)) options.spellLevel = config.spellLevel;
             if (checkRoll) {
                 options.critical = checkRoll.dice[0].results[0].result >= checkRoll.terms[0].options.critical;
             }
