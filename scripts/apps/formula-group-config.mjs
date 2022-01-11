@@ -82,6 +82,16 @@ export class FormulaGroupConfig extends DocumentSheet {
         this.renderResetWidth();
     }
 
+    _getSubmitData(updateData={}) {
+        const data = super._getSubmitData(updateData);
+        const dataExploded = foundry.utils.expandObject(data);
+
+        // make up for the v9 change to checkboxes by contructing the array how it looked in v8
+        const formulaGroupContains = Object.values(dataExploded.formulaGroupContains).map((valueObj) => Object.values(valueObj));
+
+        return {...dataExploded, formulaGroupContains};
+    }
+
     /** @override */
     async _updateObject(event, formData) {
         if (!this.isEditable) return;

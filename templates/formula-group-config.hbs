@@ -34,8 +34,9 @@
                 {{#each ../formulaGroups}}
                     <td>
                         <input
-                            name="formulaGroupContains.{{@index}}"
+                            name="formulaGroupContains.{{@index}}.{{@../index}}"
                             type="checkbox"
+                            {{!-- value="true" --}}
                             {{checked (lookup this.containsFormula @../index)}}
                         />
                     </td>
