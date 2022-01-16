@@ -1,0 +1,61 @@
+{
+    "mre-dnd5e": {
+        "SETTINGS": {
+            "AutoRollChecksLabel": "Faire automatiquement les jets des objets",
+            "AutoRollChecksHint": "Fait automatiquement les jets d'attaque ou des outils des objets s'ils existent.",
+            "AutoRollDamageLabel": "Faire automatiquement les jets de dégâts des objets",
+            "AutoRollDamageHint": "Fait automatiquement les jets d'attaque pour le premier groupe de formule s'il existe.",
+            "AutoRollRolltableLabel": "Faire automatiquement les jets pour les tables aléatoires",
+            "AutoRollRolltableHint": "Fait automatiquement de table aléatoire pour l'objet si elle existe.",
+            "ShowDamageTotalLabel": "Monter les dégâts totaux",
+            "ShowDamageTotalHint": "Montrer ou non le résultat de chaque formule de dégât dans une carte de dégâts.",
+            "GlobalDefault": "Paramètre par défaut du monde",
+            "GlobalHint": "Ce paramètre établit les valeurs par défaut pour l'ensemble des joueurs.",
+            "LocalOverride": "Surcharge locale",
+            "LocalHint": "Ce paramètre paramètre surcharge le paramètre par défaut du monde pour ce client uniquement.",
+            "ModifierAdvLabel": "Touche de modificateur AVT/CRIT",
+            "ModifierAdvHint": "En maintenant cette touche, MRE effectue un jet (test, attaque, dégât) avec un avantage ou critique.",
+            "ModifierDisAdvLabel": "Touche de modificateur DESAVT",
+            "ModifierDisAdvHint": "En maintenant cette touche, MRE effectue un jet (test, attaque) avec un désavantage.",
+            "ModifierShowRollDialogLabel": "Touche de modificateur de la fenêtre de modification des jets",
+            "ModifierShowRollDialogHint": "En maintenant cette touche, MRE affichera la fenêtre de modification des jets plutôt que la passer.",
+            "RollDialogBehaviorLabel": "Comportement de la fenêtre de modification des jets par défaut",
+            "RollDialogBehaviorHint": "Choisissez si la fenêtre de modification des jets s'affiche par défaut ou non.",
+            "Skip": "Passer",
+            "Show": "Afficher"
+        },
+        "MODIFIERS": {
+            "default": "Utiliser le paramètre par défaut du monde",
+            "altKey": "Alt/Option",
+            "ctrlKey": "Control",
+            "metaKey": "Command",
+            "shiftKey": "Shift"
+        },
+        "FORMULA-GROUP": {
+            "DialogTitle": "Configuration des groupes de formules",
+            "DialogHint": "Configurez les groupes de formules et dans à quels groupes sont assignées les formules.",
+            "Primary": "Primaire",
+            "Secondary": "Secondaire",
+            "Tertiary": "Tertiaire",
+            "Empty": "Vide",
+            "NewFormulaGroup": "Nouveau groupe de formules",
+            "SaveAndClose": "Sauvegarder & fermer",
+            "AddFormulaGroup": "Ajouter un nouveau groupe de formules",
+            "DeleteFormulaGroup": "Supprimer un groupe de formules",
+            "RenameFormulaGroup": "Renommer un nouveau groupe de formules",
+            "GroupEmptyError": "Le groupe de formules \"{label}\" est vide.",
+            "GroupsMustNotBeEmpty": "Vous devez avoir au moins une formule assignée à un groupe de formules."
+        },
+        "AUTO-ROLL": {
+            "AutoRoll": "Jet auto",
+            "OverrideFalse": "Pas de jet automatique pour cet objet (surcharge)",
+            "OverrideTrue": "Jet automatique pour cet objet (surcharge)",
+            "Default": "Utiliser la valeur par défaut pour le jet automatique de cet objet",
+            "False": "Pas de jet automatique pour cet objet",
+            "True": "Jet automatique pour cet objet"
+        },
+        "OTHER": {
+            "TotalDamage": "Total"
+        }
+    }
+}
