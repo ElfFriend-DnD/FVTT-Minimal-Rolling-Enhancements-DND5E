@@ -29,9 +29,9 @@ export function patchItemRollDamage() {
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
         let bonus = null;
 
-        const shouldShowDialog = !critical && (rollDialogBehaviorSetting === "skip"
+        const shouldShowDialog = rollDialogBehaviorSetting === "skip"
             ? event[showDamageDialogModifier]
-            : !event[showDamageDialogModifier]);
+            : !event[showDamageDialogModifier];
         // Show a custom dialog that applies to all damage parts
         if (shouldShowDialog) {
             const dialogOptions = mergeObject(
@@ -41,7 +41,7 @@ export function patchItemRollDamage() {
                     left: event?.clientX ? window.innerWidth - 710 : null,
                 }
             );
-            const dialogData = await _damageDialog({ title, rollMode, dialogOptions });
+            const dialogData = await _damageDialog({ title, rollMode, defaultCritical: critical, dialogOptions });
 
             if (!dialogData) return null;
 
@@ -95,7 +95,7 @@ export function patchItemRollDamage() {
  * @returns {Promise<{ critical: Boolean, bonus: Number, rollMode: String }>}
  * @private
  */
-async function _damageDialog({ title, rollMode, dialogOptions } = {}) {
+async function _damageDialog({ title, rollMode, defaultCritical = false, dialogOptions } = {}) {
     const template = "systems/dnd5e/templates/chat/roll-dialog.html";
     const dialogData = {
         formula: "",
@@ -120,7 +120,7 @@ async function _damageDialog({ title, rollMode, dialogOptions } = {}) {
                     callback: html => resolve({ critical: false, ..._parseDamageDialog(html[0].querySelector("form")) })
                 },
             },
-            default: "normal",
+            default: defaultCritical ? "critical" : "normal",
             close: () => resolve(null)
         }, dialogOptions).render(true);
     });
