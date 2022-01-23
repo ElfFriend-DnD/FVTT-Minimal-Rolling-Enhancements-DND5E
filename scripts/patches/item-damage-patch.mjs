@@ -19,7 +19,15 @@ export function patchItemRollDamage() {
             config = {}
         };
 
-        let { formulaGroup = 0, event = {}, critical = event[advModifier], options = {} } = config;
+        let {
+            formulaGroup = 0,
+            event = {},
+            critical = event[advModifier],
+            fastForward = rollDialogBehaviorSetting === "skip"
+                ? !event[showDamageDialogModifier] && !event[advModifier]
+                : event[showDamageDialogModifier] || event[advModifier],
+            options = {}
+        } = config;
 
         // Set up initial inner roll parameters
         const actionTypeDamageType = this.data.data.actionType === "heal"
@@ -29,11 +37,8 @@ export function patchItemRollDamage() {
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
         let bonus = null;
 
-        const shouldShowDialog = !critical && (rollDialogBehaviorSetting === "skip"
-            ? event[showDamageDialogModifier]
-            : !event[showDamageDialogModifier]);
         // Show a custom dialog that applies to all damage parts
-        if (shouldShowDialog) {
+        if (!fastForward) {
             const dialogOptions = mergeObject(
                 options.dialogOptions || {},
                 {
@@ -41,7 +46,12 @@ export function patchItemRollDamage() {
                     left: event?.clientX ? window.innerWidth - 710 : null,
                 }
             );
-            const dialogData = await _damageDialog({ title, rollMode, dialogOptions });
+            const dialogData = await _damageDialog({
+                title,
+                rollMode,
+                defaultButton: critical ? 'critical' : 'normal',
+                dialogOptions
+            });
 
             if (!dialogData) return null;
 
@@ -95,7 +105,7 @@ export function patchItemRollDamage() {
  * @returns {Promise<{ critical: Boolean, bonus: Number, rollMode: String }>}
  * @private
  */
-async function _damageDialog({ title, rollMode, dialogOptions } = {}) {
+async function _damageDialog({ title, rollMode, defaultButton, dialogOptions } = {}) {
     const template = "systems/dnd5e/templates/chat/roll-dialog.html";
     const dialogData = {
         formula: "",
@@ -120,7 +130,7 @@ async function _damageDialog({ title, rollMode, dialogOptions } = {}) {
                     callback: html => resolve({ critical: false, ..._parseDamageDialog(html[0].querySelector("form")) })
                 },
             },
-            default: "normal",
+            default: defaultButton ?? 'normal',
             close: () => resolve(null)
         }, dialogOptions).render(true);
     });
