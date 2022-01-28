@@ -2,7 +2,7 @@
   "name": "mre-dnd5e",
   "title": "Minimal Rolling Enhancements for D&D5e",
   "description": "Some minimalist enhancements to the core D&D5e rolling workflow. Attempts to stay as close to core as possible while improving convenience.",
-  "version": "3.2.0",
+  "version": "3.2.6",
   "author": "Cole Schultz, Andrew Krigline",
   "authors": [
     {
@@ -41,7 +41,7 @@
     }
   ],
   "minimumCoreVersion": "0.8.9",
-  "compatibleCoreVersion": "9.232",
+  "compatibleCoreVersion": "9",
   "url": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E",
   "manifest": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases/latest/download/module.json",
   "download": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases/latest/download/module.zip",
