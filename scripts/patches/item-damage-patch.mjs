@@ -24,7 +24,7 @@ export function patchItemRollDamage() {
             event = {},
             critical = event[advModifier],
             fastForward = rollDialogBehaviorSetting === "skip"
-                ? !event[showDamageDialogModifier] && !event[advModifier]
+                ? !event[showDamageDialogModifier]
                 : event[showDamageDialogModifier] || event[advModifier],
             options = {}
         } = config;
