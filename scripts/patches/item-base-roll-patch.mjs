@@ -48,10 +48,10 @@ export function patchItemBaseRoll() {
             chatMessageData = chatMessage.data;
         }
 
-        if (this.hasDamage && autoRollDamageWithOverride) {
-            // temporary until this can be added to core
-            const spellLevel = chatMessageData?.flags?.[MODULE_NAME]?.['spellLevel'] ?? this.data.data?.level;
+        // temporary until this can be added to core
+        const spellLevel = chatMessageData?.flags?.[MODULE_NAME]?.['spellLevel'] ?? this.data.data?.level;
 
+        if (this.hasDamage && autoRollDamageWithOverride) {
             const options = { spellLevel };
             if (Number.isNumeric(config?.spellLevel)) options.spellLevel = config.spellLevel;
             if (checkRoll) {
@@ -61,7 +61,7 @@ export function patchItemBaseRoll() {
         }
 
         if (this.data.data.formula?.length && autoRollOther) {
-            await this.rollFormula();
+            await this.rollFormula({ spellLevel });
         }
 
         const tableUuid = this.data.flags?.['items-with-rolltables-5e']?.['rollable-table-uuid'];
