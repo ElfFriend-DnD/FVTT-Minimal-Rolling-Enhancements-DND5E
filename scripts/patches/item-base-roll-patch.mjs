@@ -50,10 +50,10 @@ export function patchItemBaseRoll() {
 
         // temporary until this can be added to core
         const spellLevel = chatMessageData?.flags?.[MODULE_NAME]?.['spellLevel'] ?? this.data.data?.level;
+        const options = { spellLevel };
+        if (Number.isNumeric(config?.spellLevel)) options.spellLevel = config.spellLevel;
 
         if (this.hasDamage && autoRollDamageWithOverride) {
-            const options = { spellLevel };
-            if (Number.isNumeric(config?.spellLevel)) options.spellLevel = config.spellLevel;
             if (checkRoll) {
                 options.critical = checkRoll.dice[0].results[0].result >= checkRoll.terms[0].options.critical;
             }
@@ -61,7 +61,7 @@ export function patchItemBaseRoll() {
         }
 
         if (this.data.data.formula?.length && autoRollOther) {
-            await this.rollFormula({ spellLevel });
+            await this.rollFormula(options);
         }
 
         const tableUuid = this.data.flags?.['items-with-rolltables-5e']?.['rollable-table-uuid'];
