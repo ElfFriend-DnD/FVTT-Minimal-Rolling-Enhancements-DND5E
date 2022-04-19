@@ -23,7 +23,7 @@ ContextMenu.prototype.bind = function patchedBind() {
 /**
  * Register a new context menu to be applied to individual damage rolls in a combined damage card
  */
-Hooks.once("ready", async () => {
+Hooks.once("renderChatLog", async () => {
     let canApply = li => {
         const message = game.messages.get(li.closest(".chat-message").data("messageId"));
         return message.isContentVisible && canvas.tokens.controlled.length;
