@@ -1,6 +1,8 @@
 {
   "mre-dnd5e": {
     "SETTINGS": {
+      "AdvDisButtonsLabel": "Show advantage/disadvantage buttons.",
+      "AdvDisButtonsHint": "Adds separate buttons to chat cards for rolling advantage and disadvantage, so no modifier keys are needed.",
       "AutoRollChecksLabel": "Automatically Roll Item Checks",
       "AutoRollChecksHint": "Automatically roll the attack roll or tool check for the item if it exists.",
       "AutoRollDamageLabel": "Automatically Roll Item Damage",

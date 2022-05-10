@@ -1,5 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.mjs";
+import { SETTING_NAMES } from "../settings.mjs";
 
 // When I create an Item chat card, replace the damage buttons with our custom ones.
 export function patchItemDisplayCard() {
@@ -57,6 +58,11 @@ function _replaceDamageButtons(messageData, item) {
     const cardButtons = content.find(".card-buttons");
     if (attackButton.length) {
         attackButton.after(damageButtons);
+        if (game.settings.get(MODULE_NAME, SETTING_NAMES.ADV_DIS_BUTTONS)) {
+            attackButton.width("60%");
+            attackButton.after($(`<button data-action="attack" data-mre-mode="dis" style="width: 20%">(${game.i18n.localize("DND5E.Disadvantage").substring(0,3)})</button>`));
+            attackButton.after($(`<button data-action="attack" data-mre-mode="adv" style="width: 20%">(${game.i18n.localize("DND5E.Advantage").substring(0,3)})</button>`));
+        }
     } else {
         cardButtons.prepend(damageButtons);
     }

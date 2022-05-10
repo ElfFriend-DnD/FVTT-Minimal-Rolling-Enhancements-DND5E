@@ -9,6 +9,7 @@ export const SETTING_NAMES = {
     SHOW_ROLL_DLG_MOD: "showRollDialogModifier",
     ADV_MOD: "advModifier",
     DISADV_MOD: "disAdvModifier",
+    ADV_DIS_BUTTONS: "advDisButtons"
 }
 
 export function registerSettings() {
@@ -50,6 +51,15 @@ function _registerAutoRollsSettings() {
         hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollRolltableHint`),
         scope: "world",
         config: game.modules.get('items-with-rolltables-5e')?.active,
+        type: Boolean,
+        default: false,
+    });
+
+    game.settings.register(MODULE_NAME, SETTING_NAMES.ADV_DIS_BUTTONS, {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AdvDisButtonsLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AdvDisButtonsHint`),
+        scope: "client",
+        config: true,
         type: Boolean,
         default: false,
     });

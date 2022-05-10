@@ -37,6 +37,15 @@ function generateD20RollPatch(optionsIndex) {
             disadvantage: evt[disAdvModifier],
         }
 
+        // Ignore modifier keys for dedicated advantage and disadvantage buttons. 
+        if (evt.currentTarget?.dataset?.mreMode === "adv") {
+            optionsOverride.advantage = 1;
+            optionsOverride.disadvantage = 0;
+        } else if (evt.currentTarget?.dataset?.mreMode === "dis") {
+            optionsOverride.advantage = 0;
+            optionsOverride.disadvantage = 1;
+        }
+
         // The wrapped call will set the position of the dialog using dialogOptions, however if clientX and clientY are not defined,
         // It will place it in a weird location. For this reason, when clientX and Y are not defined, we override the dialog to be at
         // null, null, which will place it in the center of the window.
