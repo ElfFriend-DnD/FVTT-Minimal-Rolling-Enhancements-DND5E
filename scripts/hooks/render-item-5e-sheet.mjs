@@ -2,9 +2,14 @@ import { MODULE_NAME } from "../const.mjs";
 import { FormulaGroupConfig } from "../apps/formula-group-config.mjs";
 
 Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
+    const locked = !itemSheet.isEditable;
+
     // Add formula group config button
     const tooltip = game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.DialogTitle`);
-    html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-formula-groups"><i class="fas fa-tasks"></i></a>`);
+    const damageHeader = html.find(".tab.details .damage-header");
+    damageHeader.wrap(`<div class="mre-damage-header-container">`);
+    damageHeader.before(`<a title="${tooltip}" class="config-formula-groups"><i class="fas fa-tasks"></i></a>`);
+    damageHeader.after(_makeAutoRollCheckboxElement(itemSheet.document, "Damage", true, locked));
 
     // Open the formula group config when the user clicks on the button
     html.find(".config-formula-groups").click(() => new FormulaGroupConfig(itemSheet.document, { editable: itemSheet.isEditable }).render(true) );
@@ -17,88 +22,98 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
         // Only show the auto-roll checkbox button if actionType is populated
         const actionType = html.find(`.tab.details`).find(`[name="data.actionType"]`);
         actionType.wrap(`<div class="form-fields">`);
-        actionType.after(_makeAutoRollCheckboxElement(itemSheet.document, "Attack", true));
+        actionType.after(_makeAutoRollCheckboxElement(itemSheet.document, "Attack", true, locked));
     }
 
-    const damageHeader = html.find(".tab.details .damage-header");
-    damageHeader.wrap(`<div class="mre-damage-header-container">`);
-    damageHeader.after(_makeAutoRollCheckboxElement(itemSheet.document, "Damage", true));
-
     const otherFormula = html.find(`.tab.details`).find(`[name="data.formula"]`);
-    otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.document, "Other", false));
+    otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.document, "Other", false, locked));
 
-    // Handle "checkbox" button clicks
-    html.on('click', `.tab.details button.checkbox:not(.three-way)`, (event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.document));
-    html.on('click', `.tab.details button.checkbox.three-way`, (event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.document));
+    if (!locked) {
+        // Handle "checkbox" button clicks
+        html.on('click', `.tab.details input[type=checkbox]:not(.three-way)`, (event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.document));
+        html.on('click', `.tab.details input[type=checkbox].three-way`, (event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.document));
+    }
 });
 
 // only present if the Items With Rollable Tables module is present
 Hooks.on('items-with-rolltables-5e.sheetMutated', (itemSheet, html) => {
+    const locked = !itemSheet.isEditable;
     const rollableTable = html.find(`.tab.details`).find('.rollable-table-drop-target');
-    rollableTable.append(_makeAutoRollCheckboxElement(itemSheet.document, "Rolltable", true));
+    rollableTable.append(_makeAutoRollCheckboxElement(itemSheet.document, "Rolltable", true, locked));
 })
 
-function _makeAutoRollCheckboxElement(item, target, threeWay) {
+function _makeAutoRollCheckboxElement(item, target, threeWay, locked) {
     const text = game.i18n.localize(`${MODULE_NAME}.AUTO-ROLL.AutoRoll`);
-    const element = $(`<div class="mre-auto-roll"><button class="checkbox"></button><span class="label">${text}</span></div>`);
+    const element = $(`<label class="mre-auto-roll"><input type="checkbox" /><span class="label">${text}</span></label>`);
 
     const flag = item.getFlag(MODULE_NAME, `autoRoll${target}`);
-    const state = threeWay ? _stateFromNullableBoolean(flag) : _stateFromBoolean(flag);
+    const tooltip = threeWay ? _threeWayTooltip(flag) : _twoWayTooltip(flag);
+    element.prop("title", game.i18n.localize(tooltip));
 
-    const button = element.find("button")
-        .addClass(`${state.state}`)
-        .attr("data-auto-roll-target", target)
-        .attr("title", game.i18n.localize(state.tooltip));
-    if (threeWay) button.addClass("three-way");
+    const checkbox = element.find("input[type=checkbox]")[0];
+    checkbox.checked = flag;
+    checkbox.dataset.autoRollTarget = target;
+    checkbox.disabled = locked
+    if (threeWay) {
+        checkbox.indeterminate = flag === undefined;
+        checkbox.dataset.state = _threeWayState(flag);
+        checkbox.classList.add("three-way");
+    }
 
     return element;
 }
 
-function _stateFromBoolean(bool) {
-    return {
-        state: bool ? "checked" : "unchecked",
-        tooltip: bool ? `${MODULE_NAME}.AUTO-ROLL.True` : `${MODULE_NAME}.AUTO-ROLL.False`
-    }
+function _twoWayTooltip(bool) {
+    return bool ? `${MODULE_NAME}.AUTO-ROLL.True` : `${MODULE_NAME}.AUTO-ROLL.False`;
 }
 
-const _threeWayTooltipKeys = {
-    "unchecked": `${MODULE_NAME}.AUTO-ROLL.OverrideFalse`,
-    "indeterminate": `${MODULE_NAME}.AUTO-ROLL.Default`,
-    "checked": `${MODULE_NAME}.AUTO-ROLL.OverrideTrue`,
+function _threeWayTooltip(nullableBool) {
+    if (nullableBool === undefined) return `${MODULE_NAME}.AUTO-ROLL.Default`;
+    if (nullableBool) return `${MODULE_NAME}.AUTO-ROLL.OverrideTrue`;
+    else return `${MODULE_NAME}.AUTO-ROLL.OverrideFalse`;
 }
 
-function _stateFromNullableBoolean(bool) {
-    const state= bool === undefined ? "indeterminate" : ( bool ? "checked" : "unchecked" );
-    return { state, tooltip: _threeWayTooltipKeys[state], };
+function _threeWayState(nullableBool) {
+    if (nullableBool === undefined) return 0;
+    if (nullableBool) return 1;
+    else return 2;
 }
 
 function _handleTwoWayCheckboxButtonPress(event, item) {
     const el = event.currentTarget;
     const target = el.dataset.autoRollTarget;
-    const button = $(el);
 
-    if (button.hasClass("checked")) {
-        // Checkbox is currently checked, next state is unchecked
-        item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
-    } else {
-        // Checkbox is currently unchecked, next state is checked
+    if (el.checked) {
+        // Checkbox changing from unchecked to checked
         item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
+    } else {
+        // Checkbox changing from checked to unchecked
+        item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
     }
+
+    return true;
 }
 
 function _handleThreeWayCheckboxButtonPress(event, item) {
+    event.preventDefault();
     const el = event.currentTarget;
     const target = el.dataset.autoRollTarget;
-    const button = $(el);
+    const prevState = isFinite(el.dataset.state) ? parseInt(el.dataset.state) : 1;
 
-    if (button.hasClass("checked")) {
-        // Checkbox is currently checked, next state is unchecked
-        item.setFlag(MODULE_NAME, `autoRoll${target}`, false);
-    } else if (button.hasClass("indeterminate")) {
-        // Checkbox is currently indeterminate, next state is checked
-        item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
-    } else {
-        // Checkbox is currently unchecked, next state is indeterminate
-        item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
+    switch (prevState) {
+        case 0: // checkbox changing from indeterminate to checked
+            item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
+            break
+        case 1: // checkbox changing from checked to unchecked
+            item.setFlag(MODULE_NAME, `autoRoll${target}`, false);
+            break;
+        case 2: // checkbox changing from unchecked to indeterminate
+            item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
+            break;
+
     }
+
+    el.dataset.state = (prevState + 1) % 3;
+
+    return false;
 }

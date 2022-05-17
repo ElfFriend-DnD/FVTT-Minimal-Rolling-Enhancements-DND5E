@@ -121,34 +121,49 @@
 .sw5e.sheet.item .mre-damage-header-container,
 .tidy5e.sheet.item .mre-damage-header-container {
     display: flex;
+    gap: 6px;
+    align-items: center;
 }
-
 
 .dnd5e.sheet.item .mre-damage-header-container .damage-header,
 .sw5e.sheet.item .mre-damage-header-container .damage-header,
 .tidy5e.sheet.item .mre-damage-header-container .damage-header {
     flex: 1;
-    display: inline-block;
 }
 
-.dnd5e.sheet.item .mre-auto-roll,
-.sw5e.sheet.item .mre-auto-roll,
-.tidy5e.sheet.item .mre-auto-roll {
+.dnd5e.sheet.item label.mre-auto-roll,
+.sw5e.sheet.item label.mre-auto-roll,
+.tidy5e.sheet.item label.mre-auto-roll {
     display: flex;
     flex: 0 0 60px;
     max-height: 24px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
 }
 
-.tidy5e.sheet.item .mre-damage-header-container .mre-auto-roll {
-    margin: 3px;
+.dnd5e.sheet.item .mre-auto-roll input[type=checkbox],
+.sw5e.sheet.item .mre-auto-roll input[type=checkbox],
+.tidy5e.sheet.item .mre-auto-roll input[type=checkbox] {
+    margin: 0 2px;
+    cursor: pointer;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.sheet.item .locked label.mre-auto-roll {
+    cursor: default;
+}
+.sheet.item .locked label.mre-auto-roll input[type=checkbox] {
+    cursor: default;
 }
 
 .dnd5e.sheet.item .mre-auto-roll span.label,
 .sw5e.sheet.item .mre-auto-roll span.label,
 .tidy5e.sheet.item .mre-auto-roll span.label {
     display: inline-block;
-    position: relative;
-    width: 0;
     margin: 2px;
     line-height: .9;
     text-transform: uppercase;
@@ -156,82 +171,35 @@
     font-weight: bold;
     letter-spacing: .05rem;
     color: #7a7971;
-}
-
-.dnd5e.sheet.item .mre-auto-roll button.checkbox,
-.sw5e.sheet.item .mre-auto-roll button.checkbox,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox {
-    flex: 1;
-    position: relative;
-    max-width: 16px;
-    height: 16px;
-    top: -2px;
-    border: none;
-    background: none;
-    padding: 0;
-    margin: 5px;
-    cursor: pointer;
+    white-space: normal;
+    text-align: start;
 }
 
 .tidy5e.sheet.item .config-formula-groups {
     color: #7a7971;
     font-size: 16px;
-    margin-right: 4px;
 }
 
-.dnd5e.sheet.item .mre-auto-roll button.checkbox:hover,
-.sw5e.sheet.item .mre-auto-roll button.checkbox:hover,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox:hover {
-    box-shadow: none;
-    text-shadow: 0 0 8px red;
+
+/* Tidy5e Sheet Compatibility */
+.tidy5e.sheet.item .mre-damage-header-container .damage-header {
+    margin: 0;
 }
 
-.dnd5e.sheet.item .mre-auto-roll button.checkbox:before,
-.sw5e.sheet.item .mre-auto-roll button.checkbox:before,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox:before {
-    font-family: "Font Awesome 5 Free";
-    display: inline-block;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-weight: 900;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-    position: absolute;
-    left: 0;
-    top: 1px;
-    color: #7a7971;
+.tidy5e.sheet.item .mre-damage-header-container .damage-header a.add-damage {
+    margin: 0;
 }
 
-.dnd5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before,
-.sw5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before {
-    content: "\f057"; /* times */
+.tidy5e.sheet.item .sheet-body label.mre-auto-roll input[type=checkbox] {
+    -webkit-appearance: checkbox;
+    -moz-appearance: checkbox;
+    appearance: auto;
 }
 
-.dnd5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before,
-.sw5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before {
-    content: "\f111"; /* minus */
-    font-weight: 400;
-}
-
-.dnd5e.sheet.item .mre-auto-roll button.checkbox.checked:before,
-.sw5e.sheet.item .mre-auto-roll button.checkbox.checked:before,
-.tidy5e.sheet.item .mre-auto-roll button.checkbox.checked:before {
-    content: "\f058"; /* check */
-}
-
-/* Tidy5e Sheet compatibility for auto roll "checkboxes" */
-.tidy5e.sheet.item .mre-damage-header-container .damage-control {
-    display: inline-block;
-}
-
-.tidy5e.sheet.item .sheet-body .tab.details .form-group .mre-auto-roll button.checkbox {
-    background: none;
-    width: 16px;
-    height: 16px;
-    font-size: 14px;
+/* --primary-accent is defined by tidy5e. it will exist if we get into this block */
+/*noinspection CssUnresolvedCustomProperty*/
+.tidy5e.sheet.item .sheet-body label.mre-auto-roll input[type=checkbox]:hover {
+    -webkit-box-shadow: 0 0 0 1px var(--primary-accent) inset;
+    box-shadow: 0 0 0 1px var(--primary-accent) inset;
 }
 
