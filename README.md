@@ -13,11 +13,20 @@ A key philosophy for this module is to remain non-disruptive to minimize conflic
 MRE is targeted at a low-automation workflow.
 If you are looking for high levels of automation, you should consider using other modules.
 
+## Core V10 Sunsetting
+
+Minimal Rolling Enhancements is being sunset for core v10/dnd5e v2 in favor of these two modules:
+
+- [Faster Rolling by Default](https://github.com/ElfFriend-DnD/foundryvtt-faster-rolling-by-default-5e)
+    - Replaces the auto-fast-forward side of MRE, as well as automatically rolling item checks, damage rolls, and tables when an Item is used.
+- [Roll Groups](https://github.com/krbz999/rollgroups)
+    - Replaces the formula groups side of MRE.
+
 ## Features
 
 Visit the [User Guide](https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/wiki/User-Guide) for more information on each feature and informative screenshots.
 
-![A screenshot of a weapon chat card displaying a variety of MRE features](https://f002.backblazeb2.com/file/cws-images/FVTT-MRE/flame-tongue.webp)
+![A screenshot of a weapon chat card displaying a variety of MRE features](https://user-images.githubusercontent.com/7644614/137599874-f14bd771-be81-4442-8401-24fdb5c9918b.png)
 
 - MRE **inverts the default dialog behavior** for attack rolls, ability check rolls, save rolls, skill rolls, and damage rolls.
   - With no modifier keys held, these rolls will happen instantly, rather than showing the dialog.
